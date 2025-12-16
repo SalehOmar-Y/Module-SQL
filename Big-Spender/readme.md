@@ -49,7 +49,7 @@ You are working with Claire and Farnoosh, who are trying to complete a missing r
 
 ```sql
 Select * from spends 
-Where amount Between 30000 And 31000;
+Where am Between 30000 And 31000;
 ```
 
 **Claire:** That's great, thanks. Hey, what about transactions that include the word 'fee' in their description?
@@ -77,7 +77,7 @@ Select * from spends where description ILike '%fee%';
 **You:** No worries. Here's the query for that:
 
 ```sql
-Select transaction_no, expense_area 
+Select * 
 from spends 
 Join  expense_areas 
 On  spends.expense_area_id = expense_areas.id
@@ -89,7 +89,7 @@ Where expense_area ILIKE 'Better Hospital Food';
 **You:** You can get that by using the GROUP BY clause. Here's the query:
 
 ```sql
-Select DATE_TRUNC('month', spends.date) AS month
+Select Extract(Month from spends.date) AS month
 , SUM(spends.amount) AS total_spend
 From spends 
 Group by month; 
@@ -100,7 +100,7 @@ Group by month;
 **You:** Sure thing. Here's the query for that:
 
 ```sql
-Select supplier_id, SUM(amount) AS total_spent
+Select SUM(amount) AS total_spent
 From spends
 Group by supplier_id
 Order by total_spent desc;
@@ -111,9 +111,11 @@ Order by total_spent desc;
 **You:** Whoops! I gave you ids to key the totals, but let me give you names instead.
 
 ```sql
-Select  description,  SUM(amount) AS total_spent
-From spends
-Group by  description
+Select  s.supplier As supplier_name, 
+        SUM(sp.amount) AS total_spent
+From suppliers s
+Join spends sp On sp.supplier_id = s.id
+Group by s.supplier
 Order by total_spent desc;
 ```
 
