@@ -49,7 +49,7 @@ You are working with Claire and Farnoosh, who are trying to complete a missing r
 
 ```sql
 Select * from spends 
-Where transaction_no Between 30000 And 31000;
+Where amount Between 30000 And 31000;
 ```
 
 **Claire:** That's great, thanks. Hey, what about transactions that include the word 'fee' in their description?
