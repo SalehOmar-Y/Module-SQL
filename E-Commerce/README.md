@@ -52,8 +52,10 @@ WHERE  product_name ILIKE '%socks%';
 ```
 - [ ] List all the products which cost more than 100 showing product id, name, unit price, and supplier id.
 ``` sql
-SELECT * FROM product_availability
-WHERE unit_price > 100;
+SELECT     p.id AS product_id, p.product_name, pa.unit_price, pa.supp_id AS supplier_id
+FROM products p
+JOIN product_availability pa ON p.id = pa.prod_id
+WHERE pa.unit_price > 100;
 ```
 - [ ] List the 5 most expensive products.
 ```sql
@@ -73,7 +75,7 @@ WHERE s.country = 'United Kingdom';
 ``` sql
 SELECT * FROM order_items oi
 JOIN orders o ON oi.id = o.customer_id
-JOIN costumers c ON o.customer_id = c.name
+JOIN customers c ON o.customer_id = c.id
 WHERE c.name  = 'Hope Crosby';
 ```   
 - [ ] List all the products in the order ORD006. The result should only contain the columns product_name, unit_price, and quantity.
@@ -87,14 +89,13 @@ WHERE o.order_reference = 'ORD006';
 ```
 - [ ] List all the products with their supplier for all orders of all customers. The result should only contain the columns name (from customer), order_reference, order_date, product_name, supplier_name, and quantity
 ```sql
-SELECT c.name AS from_customer
+SELECT c.name, o.order_reference, o.order_date, p.product_name, s.supplier_name, oi.quantity
 FROM customers c 
 JOIN orders o ON c.id = o.customer_id
 JOIN order_items oi ON o.id = oi.order_id 
 JOIN products p ON oi.product_id = p.id
-JOIN product_availability pa ON p.id = pa.prod_id
-JOIN suppliers s ON pa.supp_id = s.id
-ORDER BY c.name;
+JOIN suppliers s ON oi.supplier_id = s.id
+ORDER BY order_date, c.name;
 ```
 ## Acceptance Criteria
 
