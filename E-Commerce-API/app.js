@@ -26,4 +26,10 @@ app.post("/customers", (req, res) => {
     newCustomer.id = 2; // Simulate DB generated ID
     res.status(201).json(newCustomer); // Return created customer
 })
+
+app.post("/products", (req, res) => {
+    const newProduct = req.body;
+    newProduct.id = 4;
+    res.status(201).json(newProduct);
+})
 module.exports = app;

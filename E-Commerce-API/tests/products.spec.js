@@ -33,3 +33,24 @@ describe("GET /products?name=", () => {
   });
 });
 
+describe("Post /products", () => {
+  it("should create a new product", async () => {
+    const newProduct = {
+      name: "Smartwatch",
+      price: 300,
+      supplierName: "SaFit",
+    };
+    const response = await request(app)
+      .post("/products")
+      .send(newProduct);
+    expect(response.status).toBe(201);
+    expect(response.body).toEqual(
+      expect.objectContaining({
+        id: expect.any(Number),
+        name: "Smartwatch",
+        price: 300,
+        supplierName: "SaFit",
+      })
+    );
+  });
+})
