@@ -10,5 +10,15 @@ app.get("/products", (req, res) => {
   ]);
 });
 
+app.get("/customers/:id", (req, res) => {
+    const custId = parseInt(req.params.id)
+    res.json({
+        id: custId,
+        name: "John Doe",
+        address: "123 Main St",
+        city: "Anytown",
+        country: "USA"
+    });
+});
 
 module.exports = app;
