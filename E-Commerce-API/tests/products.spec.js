@@ -16,3 +16,20 @@ describe("GET /products", () => {
     );
   });
 });
+
+describe("GET /products?name=", () => {
+  it("filters products by name", async () => {
+    const response = await request(app).get("/products?name=lap");
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: expect.stringMatching(/lap/),
+          price: expect.any(Number),
+          supplierName: expect.any(String),
+        }),
+      ])
+    );
+  });
+});
+
