@@ -31,5 +31,31 @@ app.post("/products", (req, res) => {
     const newProduct = req.body;
     newProduct.id = 4;
     res.status(201).json(newProduct);
-})
+});
+
+app.post("/product-availability", (req, res) => {
+  const { productId, supplierId, price } = req.body;
+
+  if (!Number.isInteger(price) || price <= 0) {
+    return res.status(400).json({ error: "Price must be a positive integer" });
+  } 
+
+  const validSupplierIds = [1, 2, 3]; // Simulated existing supplier IDs
+  if (!validSupplierIds.includes(supplierId)) {
+    return res.status(404).json({ error: "Supplier not found" });
+  }
+  
+  const validProductIds = [1, 2, 3]; // Simulated existing product IDs
+  if (!validProductIds.includes(productId)) {
+    return res.status(404).json({ error: "Product not found" });
+  }
+  const newAvailability = {
+    id: 1, // Simulated DB generated ID
+    productId,
+    supplierId,
+    price,
+  };
+
+  res.status(201).json(newAvailability);
+});
 module.exports = app;
