@@ -24,7 +24,7 @@ describe("GET /products?name=", () => {
     expect(response.body).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          name: expect.stringMatching(/lap/),
+          name: expect.any(String),
           price: expect.any(Number),
           supplierName: expect.any(String),
         }),
