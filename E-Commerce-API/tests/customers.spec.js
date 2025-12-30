@@ -77,3 +77,27 @@ describe("Post /customers/:customerId/orders", () => {
         );
     });
 });
+
+describe("Put /customers/:customerId", () => {
+    it("should update an existing customer's details", async () => {
+        const updatedCustomer = {
+                name: "Alice Johnson",
+                address: "789 Pine St",
+                city: "Manchester",
+                country: "UK"
+        };
+        const response = await request(app)
+            .put("/customers/1")
+            .send(updatedCustomer);
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual(
+            expect.objectContaining({
+                id: expect.any(Number),
+                name: "Alice Johnson",
+                address: "789 Pine St",
+                city: "Manchester",
+                country: "UK"
+            })
+        );  
+    })
+})

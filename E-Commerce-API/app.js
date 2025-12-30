@@ -2,6 +2,15 @@ const express = require("express");
 const app = express();
 app.use(express.json());// Middleware to parse JSON bodies
 
+let customers = [     
+        {
+            id: 1,
+            name: "Alice Smith",
+            address: "456 Oak St",
+            city: "Liverpool",
+            country: "UK" 
+        }
+];
 app.get("/products", (req, res) => {
   res.status(200).json([
     { name: "laptop",price: 2500, supplierName: "Dell" },
@@ -67,8 +76,21 @@ app.post("/customers/:customerId/orders", (req, res) => {
 
      if (customerId !== 1) {
         return res.status(404).json({ error: "Customer not found" });
-    }//
+    }
     res.status(201).json(newOrder);
-
 });
+
+app.put("/customers/:customerId", (req, res) => {
+  const customerId = Number(req.params.customerId);
+  const { name, address, city, country } = req.body;
+
+  const customer = customers.find((customer) => customer.id === customerId);
+  customer.name = name;
+  customer.address = address;
+  customer.city = city;
+  customer.country = country;
+
+  return res.status(200).json(customer);
+});
+
 module.exports = app;
