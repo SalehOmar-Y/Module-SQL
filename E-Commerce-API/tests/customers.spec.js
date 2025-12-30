@@ -41,3 +41,39 @@ describe("Post /customers", () => {
         );
     });
 });
+
+describe("Post /customers/:customerId/orders", () => {
+    it("should create a new order for a customer", async () => {
+        const newOrder = {
+            orderDate: "2025-12-30",
+            referenceNumber: "ORD123",
+        };
+        const response = await request(app)
+            .post("/customers/1/orders")
+            .send(newOrder);
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual(
+            expect.objectContaining({
+                id: expect.any(Number),
+                customerId: 1,
+                orderDate: "2025-12-30",
+                referenceNumber: "ORD123",
+            })
+        );
+    });
+    it("should return 404 if customer does not exist", async () => {
+        const newOrder = {
+            orderDate: "2025-12-30",
+            referenceNumber: "ORD123",
+        };
+        const response = await request(app)
+            .post("/customers/999/orders")
+            .send(newOrder);
+        expect(response.status).toBe(404);
+        expect(response.body).toEqual(
+            expect.objectContaining({
+                error: expect.any(String),
+            })
+        );
+    });
+});

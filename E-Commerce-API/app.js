@@ -58,4 +58,17 @@ app.post("/product-availability", (req, res) => {
 
   res.status(201).json(newAvailability);
 });
+
+app.post("/customers/:customerId/orders", (req, res) => {
+    const customerId = parseInt(req.params.customerId);
+    const newOrder = req.body;
+    newOrder.id = 1;
+    newOrder.customerId = customerId;
+
+     if (customerId !== 1) {
+        return res.status(404).json({ error: "Customer not found" });
+    }//
+    res.status(201).json(newOrder);
+
+});
 module.exports = app;
