@@ -11,6 +11,10 @@ let customers = [
             country: "UK" 
         }
 ];
+
+let orders = [{ id:1, customerId:1, orderItem:"Cups", quantity:4 },
+             { id:2, customerId:1, orderItem:"Plates", quantity:2 }];
+
 app.get("/products", (req, res) => {
   res.status(200).json([
     { name: "laptop",price: 2500, supplierName: "Dell" },
@@ -93,4 +97,10 @@ app.put("/customers/:customerId", (req, res) => {
   return res.status(200).json(customer);
 });
 
+app.delete("/orders/:orderId", (req, res) => {
+    const orderId = parseInt(req.params.orderId);
+    const orderIndex = orders.findIndex(order => order.id === orderId);
+    orders.splice(orderIndex, 1);
+     return res.status(204).send();
+});
 module.exports = app;
