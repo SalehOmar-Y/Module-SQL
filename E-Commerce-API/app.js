@@ -19,8 +19,14 @@ let customers = [
         }
 ];
 
-let orders = [{ id:1, customerId:1, orderItem:"Cups", quantity:4 },
-             { id:2, customerId:1, orderItem:"Plates", quantity:2 }];
+let orders = [{ id:1, orderDate:"2025-12-01", orderReference:"REF123", customerId:1, orderItem:"Cups", quantity:4 },
+             { id:1, orderDate:"2025-12-01", orderReference:"REF123", customerId:1, orderItem:"Plates", quantity:2 }];
+            
+let items = [
+  { id: 1, orderId: 1, productName: "Cups", unitPrice: 10, supplierName: "MS", quantity: 10 },
+  { id: 2, orderId: 1, productName: "Plates", unitPrice: 12, supplierName: "MS", quantity: 10 }
+];
+
 
 app.get("/products", (req, res) => {
   res.status(200).json([
@@ -119,5 +125,21 @@ app.delete("/customers/:customerId", (req, res) => {
     }
     customers = customers.find(customer => customer.id !== customerId);
     return res.status(204).send();
+});
+
+app.get("/customers/:customerId/orders", (req, res) => {
+    const customerId = parseInt(req.params.customerId);
+    const customerOrders = orders.filter(order => order.customerId === customerId)
+        .map(order => ({
+            id: order.id,
+            orderDate: order.orderDate,
+            referenceNumber: order.orderReference,
+            productName: order.orderItem,
+            unitPrice: items.find(item => item.productName === order.orderItem).unitPrice,
+            supplierName: items.find(item => item.productName === order.orderItem).supplierName,
+            quantity: order.quantity,
+            items: items.filter(item => item.orderId === order.id)
+        }));
+    res.status(200).json(customerOrders);
 });
 module.exports = app;
