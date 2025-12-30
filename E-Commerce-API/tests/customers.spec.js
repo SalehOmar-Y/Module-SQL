@@ -101,3 +101,11 @@ describe("Put /customers/:customerId", () => {
         );  
     })
 })
+
+describe("DELETE /customers/:customerId", () => {
+    it("should delete a customer if they have no orders", async () => {
+        const response = await request(app).delete("/customers/2");
+        expect(response.status).toBe(204);
+        expect(response.body).toEqual({});
+    });         
+})

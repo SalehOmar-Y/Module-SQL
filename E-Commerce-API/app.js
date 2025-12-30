@@ -9,6 +9,13 @@ let customers = [
             address: "456 Oak St",
             city: "Liverpool",
             country: "UK" 
+        },
+        {
+            id: 2,
+            name: "Lee Adam",
+            address: "321 Sea St",
+            city: "Birmingham",
+            country: "UK"
         }
 ];
 
@@ -102,5 +109,15 @@ app.delete("/orders/:orderId", (req, res) => {
     const orderIndex = orders.findIndex(order => order.id === orderId);
     orders.splice(orderIndex, 1);
      return res.status(204).send();
+});
+
+app.delete("/customers/:customerId", (req, res) => {
+    const customerId = parseInt(req.params.customerId);
+    const hasOrders = orders.find(order => order.customerId === customerId);
+    if (hasOrders) {
+        return res.status(400).json({ error: "Cannot delete customer with existing orders" });
+    }
+    customers = customers.find(customer => customer.id !== customerId);
+    return res.status(204).send();
 });
 module.exports = app;
