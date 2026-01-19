@@ -37,14 +37,14 @@ app.get("/products", (req, res) => {
 });
 
 app.get("/customers/:id", (req, res) => {
-    const custId = parseInt(req.params.id) // Simulate fetching from DB
-    res.json({
-        id: custId,
-        name: "John Doe",
-        address: "123 Main St",
-        city: "Anytown",
-        country: "USA"
-    });
+    const custId = Number(req.params.id); // Simulate fetching from DB
+    const customer = customers.find((c) => c.id === custId);
+
+    if (!customer) {
+        return res.status(404).json({ error: "Customer not found" }); 
+    }
+
+    return res.status(200).json(customer);
 });
 
 app.post("/customers", (req, res) => {
@@ -142,4 +142,6 @@ app.get("/customers/:customerId/orders", (req, res) => {
         }));
     res.status(200).json(customerOrders);
 });
+
+
 module.exports = app;
