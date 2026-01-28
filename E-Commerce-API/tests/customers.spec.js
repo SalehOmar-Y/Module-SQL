@@ -13,7 +13,7 @@ describe("Get /customers/:id", () => {
         address: expect.any(String),
         city: expect.any(String),
         country: expect.any(String),
-      }       
+      }
       )
     )
   })

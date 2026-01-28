@@ -37,7 +37,7 @@ app.get("/products", (req, res) => {
 });
 
 app.get("/customers/:id", (req, res) => {
-    const custId = Number(req.params.id); // Simulate fetching from DB
+    const custId = Number(req.params.id); 
     const customer = customers.find((c) => c.id === custId);
 
     if (!customer) {
